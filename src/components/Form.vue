@@ -7,164 +7,91 @@
       </v-card-title>
 
       <v-card-text>
-        <validation-observer ref="observer">
-          <v-form class="px-5">
-            <validation-provider
-                v-slot="{ errors }"
-                name="Name"
-                :rules="{
-          required: true
-            }">
+          <v-form ref="formRef" class="px-5">
               <v-text-field
                   v-model="editedContact.name"
+                  :rules="inputRule"
                   required
-                  :error-messages="errors"
                   label="Name"></v-text-field>
-            </validation-provider>
-
-            <validation-provider
-                v-slot="{ errors }"
-                name="Last Name"
-                :rules="{
-          required: true
-            }">
               <v-text-field
                   v-model="editedContact.last_name"
+                  :rules="inputRule"
                   required
-                  :error-messages="errors"
                   label="Last Name"></v-text-field>
-            </validation-provider>
 
-            <validation-provider
-                v-slot="{ errors }"
-                name="Phone"
-                :rules="{
-          required: true,
-          digits: 9,
-          regex: '^[0-9]*$'
-            }">
               <v-text-field
                   v-model="editedContact.phone_number"
                   :counter="9"
-                  :error-messages="errors"
+                  :rules="phoneRule"
                   label="Phone Number"
                   required
               ></v-text-field>
-            </validation-provider>
-
-
-            <validation-provider
-                v-slot="{ errors }"
-                name="Email"
-                :rules="{
-          required: true,
-          email: true
-            }"
-                >
               <v-text-field
                   v-model="editedContact.email"
-                  :error-messages="errors"
+                  :rules="emailRule"
                   label="Email"
                   required
               ></v-text-field>
-            </validation-provider>
 
-            <validation-provider
-                v-slot="{ errors }"
-                name="Country"
-                :rules="{
-          required: true,
-            }"
-            >
               <v-text-field
                   v-model="editedContact.country"
-                  :error-messages="errors"
+                  :rules="inputRule"
                   label="Country"
                   required
               ></v-text-field>
-            </validation-provider>
-
-            <validation-provider
-                v-slot="{ errors }"
-                name="City"
-                :rules="{
-          required: true,
-            }"
-            >
               <v-text-field
                   v-model="editedContact.city"
-                  :error-messages="errors"
+                  :rules="inputRule"
                   label="City"
                   required
               ></v-text-field>
-            </validation-provider>
-
-            <validation-provider
-                v-slot="{ errors }"
-                name="Address"
-                :rules="{
-          required: true,
-            }"
-            >
               <v-text-field
                   v-model="editedContact.address"
-                  :error-messages="errors"
+                  :rules="inputRule"
                   label="Address"
                   required
               ></v-text-field>
-            </validation-provider>
 
               <v-btn text class="success mr-6 mt-4" @click="add()">Add contact</v-btn>
               <v-btn text class="red mt-4 white--text" @click="$emit('close')">Cancel</v-btn>
 
           </v-form>
-        </validation-observer>
       </v-card-text>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import {required, digits, regex, email} from 'vee-validate/dist/rules'
-import {extend, setInteractionMode, ValidationProvider, ValidationObserver} from 'vee-validate';
-
-setInteractionMode('eager')
-
-extend('required', {
-  ...required,
-  message: '{_field_} can not be empty',
-})
-
-extend('digits', {
-  ...digits,
-  message: '{_field_} needs to be {length} digits. ({_value_})',
-})
-
-extend('regex', {
-  ...regex,
-  message: '{_field_} {_value_} does not match {regex}',
-})
-
-extend('email', email);
 
 export default {
   name: "Form",
   props: ['dialog', 'editedContact'],
-  components: {
-    ValidationProvider,
-    ValidationObserver
-  },
   data() {
     return {
       inputRule: [
         v => v.length >= 1 || 'Field can not be empty'
+      ],
+      emailRule: [
+        v => v.length >= 1 || 'Field can not be empty',
+        v => /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(v) || 'E-mail must be valid'
+      ],
+      phoneRule: [
+        v => v.length === 9 || 'You must input 9 digits',
+        v => new RegExp('^[0-9]*$').test(v) || 'Phone need to be 9 digits'
       ]
     }
   },
   methods: {
     add() {
-      console.log(this.editedContact.name);
-      this.$emit('close');
+      if (this.$refs.formRef.validate()) {
+        console.log('validate')
+      }
+      // if (this.errors.items.length >= 0) {
+      //   console.log('sa bledy');
+      // }
+
+      console.log(this.editedContact);
+      // this.$emit('close');
     }
   }
 }
