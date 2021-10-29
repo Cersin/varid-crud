@@ -1,40 +1,68 @@
 <template>
   <v-app id="inspire">
-    <v-navigation-drawer
-        v-model="drawer"
-        app
-    >
-      <!--  -->
-    </v-navigation-drawer>
+    <Form :dialog="dialogOpen" :editedContact="editContact" @close="closeDialog"></Form>
 
     <v-app-bar app>
-      <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-
       <v-toolbar-title>Application</v-toolbar-title>
+      <v-spacer></v-spacer>
+      <v-btn text class="primary"
+             @click="newContact">Add new contact
+      </v-btn>
     </v-app-bar>
 
     <v-main>
-      <Table :data="contacts"></Table>
+      <Table @editItem="editItem" :data="contacts"></Table>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Table from "@/components/Table";
+import Form from "@/components/Form";
+
 export default {
-  components: {Table},
+  components: {Table, Form},
   data() {
     return {
       drawer: null,
-      dialog: false,
-      contacts: []
+      dialogOpen: false,
+      contacts: [],
+      editContact: {
+        name: "",
+        last_name: "",
+        phone_number: "",
+        email: "",
+        country: "",
+        city: "",
+        address: ""
+      },
+      defaultContact: {
+        name: "",
+        last_name: "",
+        phone_number: "",
+        email: "",
+        country: "",
+        city: "",
+        address: ""
+      }
     }
   },
-  created () {
-    this.initialize()
+  created() {
+    this.initialize();
   },
   methods: {
-    initialize () {
+    closeDialog() {
+      this.dialogOpen = false;
+    },
+    editItem(item) {
+      this.editContact = item;
+      this.dialogOpen = true;
+    },
+    newContact() {
+      this.editContact = this.defaultContact
+      this.dialogOpen = true;
+    },
+    initialize() {
       this.contacts = [
         {
           "id": 547,

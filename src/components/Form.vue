@@ -1,11 +1,9 @@
 <template>
-  <v-dialog v-model="dialog" max-width="600px">
-    <template v-slot:activator="{ on }">
-      <v-btn text v-on="on" class="primary">Add new contact</v-btn>
-    </template>
+  <v-dialog persistent v-model="dialog" max-width="600px">
     <v-card>
       <v-card-title>
-        <span class="text--h2">New Contact</span>
+        <span v-if="editedContact.id" class="text--h2">Edit Contact</span>
+        <span v-else class="text--h2">New Contact</span>
       </v-card-title>
 
       <v-card-text>
@@ -18,7 +16,7 @@
           required: true
             }">
               <v-text-field
-                  v-model="name"
+                  v-model="editedContact.name"
                   required
                   :error-messages="errors"
                   label="Name"></v-text-field>
@@ -31,7 +29,7 @@
           required: true
             }">
               <v-text-field
-                  v-model="last_name"
+                  v-model="editedContact.last_name"
                   required
                   :error-messages="errors"
                   label="Last Name"></v-text-field>
@@ -46,7 +44,7 @@
           regex: '^[0-9]*$'
             }">
               <v-text-field
-                  v-model="phone_number"
+                  v-model="editedContact.phone_number"
                   :counter="9"
                   :error-messages="errors"
                   label="Phone Number"
@@ -64,7 +62,7 @@
             }"
                 >
               <v-text-field
-                  v-model="email"
+                  v-model="editedContact.email"
                   :error-messages="errors"
                   label="Email"
                   required
@@ -79,7 +77,7 @@
             }"
             >
               <v-text-field
-                  v-model="country"
+                  v-model="editedContact.country"
                   :error-messages="errors"
                   label="Country"
                   required
@@ -94,7 +92,7 @@
             }"
             >
               <v-text-field
-                  v-model="city"
+                  v-model="editedContact.city"
                   :error-messages="errors"
                   label="City"
                   required
@@ -109,15 +107,15 @@
             }"
             >
               <v-text-field
-                  v-model="address"
+                  v-model="editedContact.address"
                   :error-messages="errors"
                   label="Address"
                   required
               ></v-text-field>
             </validation-provider>
 
-              <v-btn text class="success mr-6 mt-4">Add contact</v-btn>
-              <v-btn text class="red mt-4 white--text" @click="close">Cancel</v-btn>
+              <v-btn text class="success mr-6 mt-4" @click="add()">Add contact</v-btn>
+              <v-btn text class="red mt-4 white--text" @click="$emit('close')">Cancel</v-btn>
 
           </v-form>
         </validation-observer>
@@ -151,29 +149,22 @@ extend('email', email);
 
 export default {
   name: "Form",
+  props: ['dialog', 'editedContact'],
   components: {
     ValidationProvider,
     ValidationObserver
   },
   data() {
     return {
-      dialog: false,
       inputRule: [
         v => v.length >= 1 || 'Field can not be empty'
-      ],
-      name: "",
-      last_name: "",
-      phone_number: "",
-      email: "",
-      country: "",
-      city: "",
-      address: ""
+      ]
     }
   },
   methods: {
-    close() {
-      this.dialog = false;
-      console.log('closing');
+    add() {
+      console.log(this.editedContact.name);
+      this.$emit('close');
     }
   }
 }
