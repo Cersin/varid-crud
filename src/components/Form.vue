@@ -2,8 +2,7 @@
   <v-dialog persistent v-model="dialog" max-width="600px">
     <v-card>
       <v-card-title>
-        <span v-if="editedContact.id" class="text--h2">Edit Contact</span>
-        <span v-else class="text--h2">New Contact</span>
+        <span class="text--h2">{{ headerTitle }}</span>
       </v-card-title>
 
       <v-card-text>
@@ -52,7 +51,7 @@
               required
           ></v-text-field>
 
-          <v-btn text class="success mr-6 mt-4" @click="add()">Add contact</v-btn>
+          <v-btn text class="success mr-6 mt-4" @click="add()">{{ buttonTitle }}</v-btn>
           <v-btn text class="red mt-4 white--text" @click="$emit('close')">Cancel</v-btn>
 
         </v-form>
@@ -81,7 +80,15 @@ export default {
       ]
     }
   },
+  computed: {
+    buttonTitle() {
+      return this.editedContact.id ? 'Edit contact' : 'Add contact'
+    },
+    headerTitle() {
+      return this.editedContact.id ? 'Edit contact' : 'New contact'
 
+    }
+  },
   methods: {
     async add() {
       if (this.$refs.formRef.validate()) {
