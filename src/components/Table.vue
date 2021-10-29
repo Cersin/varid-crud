@@ -75,7 +75,6 @@ export default {
   }),
   methods: {
     paginate() {
-      console.log(this.options.itemsPerPage);
       this.$emit('options', {
         page: this.options.page,
         per_page: this.options.itemsPerPage
