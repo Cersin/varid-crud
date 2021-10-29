@@ -74,9 +74,12 @@ export default {
     async initialize() {
       this.loading = true;
       this.contacts = [];
+      let url = process.env.VUE_APP_API_URL;
+      let urlPaginate = `${url}?per_page=${this.per_page}&page=${this.page}`;
       try {
-        let url = process.env.VUE_APP_API_URL;
-        let urlPaginate = `${url}?per_page=${this.per_page}&page=${this.page}`;
+        if (this.per_page === -1) {
+          urlPaginate = `${url}?per_page=${this.total}&page=${this.page}`;
+        }
         const res = await this.axios.get(urlPaginate);
         const { data, total } = res.data;
         this.contacts = data;
