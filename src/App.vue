@@ -11,7 +11,7 @@
     </v-app-bar>
 
     <v-main>
-      <Table @editItem="editItem" @options="options" :data="contacts" :total="total" :loading="loading"></Table>
+      <Table @editItem="editItem" @reload="initialize" @options="options" :data="contacts" :total="total" :loading="loading"></Table>
     </v-main>
   </v-app>
 </template>

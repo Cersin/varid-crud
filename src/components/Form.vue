@@ -102,31 +102,35 @@ export default {
           address: this.editedContact.address
         }
 
-        try {
-          if (this.editedContact.id) {
-            await this.editContact(contact, this.editedContact.id);
-            this.$emit('close');
-            this.$emit('reload');
-          } else {
-            await this.createContact(contact);
-            this.$emit('close');
-            this.$emit('reload');
+       let confirmation = confirm("Are you sure?");
+
+        if (confirmation) {
+          try {
+            if (this.editedContact.id) {
+              await this.editContact(contact, this.editedContact.id);
+              this.$emit('close');
+              this.$emit('reload');
+            } else {
+              await this.createContact(contact);
+              this.$emit('close');
+              this.$emit('reload');
+            }
+          } catch (e) {
+            console.log(e);
           }
-        } catch (e) {
-          console.log(e);
         }
       }
 
     },
     createContact(contact) {
-      return this.axios.post(process.env.VUE_APP_API_POST, contact, {
+      return this.axios.post(process.env.VUE_APP_API_REQUEST, contact, {
         headers: {
           'content-type': 'application/json',
         }
       });
     },
     editContact(contact, id) {
-      return this.axios.put(`${process.env.VUE_APP_API_PUT}/${id}`, contact, {
+      return this.axios.put(`${process.env.VUE_APP_API_REQUEST}/${id}`, contact, {
         headers: {
           'content-type': 'application/json',
         }
