@@ -18,7 +18,7 @@
             vertical
         ></v-divider>
         <v-spacer></v-spacer>
-
+        <Form></Form>
 <!--        <v-dialog v-model="dialogDelete" max-width="500px">-->
 <!--          <v-card>-->
 <!--            <v-card-title class="text-h5">Are you sure you want to delete this item?</v-card-title>-->
@@ -59,7 +59,9 @@
 </template>
 
 <script>
+import Form from "@/components/Form";
 export default {
+  components: {Form},
   props: ['data'],
   data: () => ({
     dialog: false,
