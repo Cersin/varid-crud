@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <Form :dialog="dialogOpen" :editedContact="editContact" @close="closeDialog"></Form>
+    <Form :dialog="dialogOpen" :editedContact="editContact" @close="closeDialog" @reload="initialize"></Form>
 
     <v-app-bar app>
       <v-toolbar-title>Application</v-toolbar-title>
@@ -57,6 +57,7 @@ export default {
   methods: {
     closeDialog() {
       this.dialogOpen = false;
+      this.initialize();
     },
     editItem(item) {
       this.editContact = item;

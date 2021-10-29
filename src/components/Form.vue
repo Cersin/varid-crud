@@ -7,55 +7,55 @@
       </v-card-title>
 
       <v-card-text>
-          <v-form ref="formRef" class="px-5">
-              <v-text-field
-                  v-model="editedContact.name"
-                  :rules="inputRule"
-                  required
-                  label="Name"></v-text-field>
-              <v-text-field
-                  v-model="editedContact.last_name"
-                  :rules="inputRule"
-                  required
-                  label="Last Name"></v-text-field>
+        <v-form ref="formRef" class="px-5">
+          <v-text-field
+              v-model="editedContact.name"
+              :rules="inputRule"
+              required
+              label="Name"></v-text-field>
+          <v-text-field
+              v-model="editedContact.last_name"
+              :rules="inputRule"
+              required
+              label="Last Name"></v-text-field>
 
-              <v-text-field
-                  v-model="editedContact.phone_number"
-                  :counter="9"
-                  :rules="phoneRule"
-                  label="Phone Number"
-                  required
-              ></v-text-field>
-              <v-text-field
-                  v-model="editedContact.email"
-                  :rules="emailRule"
-                  label="Email"
-                  required
-              ></v-text-field>
+          <v-text-field
+              v-model="editedContact.phone_number"
+              :counter="9"
+              :rules="phoneRule"
+              label="Phone Number"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="editedContact.email"
+              :rules="emailRule"
+              label="Email"
+              required
+          ></v-text-field>
 
-              <v-text-field
-                  v-model="editedContact.country"
-                  :rules="inputRule"
-                  label="Country"
-                  required
-              ></v-text-field>
-              <v-text-field
-                  v-model="editedContact.city"
-                  :rules="inputRule"
-                  label="City"
-                  required
-              ></v-text-field>
-              <v-text-field
-                  v-model="editedContact.address"
-                  :rules="inputRule"
-                  label="Address"
-                  required
-              ></v-text-field>
+          <v-text-field
+              v-model="editedContact.country"
+              :rules="inputRule"
+              label="Country"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="editedContact.city"
+              :rules="inputRule"
+              label="City"
+              required
+          ></v-text-field>
+          <v-text-field
+              v-model="editedContact.address"
+              :rules="inputRule"
+              label="Address"
+              required
+          ></v-text-field>
 
-              <v-btn text class="success mr-6 mt-4" @click="add()">Add contact</v-btn>
-              <v-btn text class="red mt-4 white--text" @click="$emit('close')">Cancel</v-btn>
+          <v-btn text class="success mr-6 mt-4" @click="add()">Add contact</v-btn>
+          <v-btn text class="red mt-4 white--text" @click="$emit('close')">Cancel</v-btn>
 
-          </v-form>
+        </v-form>
       </v-card-text>
     </v-card>
   </v-dialog>
@@ -81,17 +81,49 @@ export default {
       ]
     }
   },
-  methods: {
-    add() {
-      if (this.$refs.formRef.validate()) {
-        console.log('validate')
-      }
-      // if (this.errors.items.length >= 0) {
-      //   console.log('sa bledy');
-      // }
 
-      console.log(this.editedContact);
-      // this.$emit('close');
+  methods: {
+    async add() {
+      if (this.$refs.formRef.validate()) {
+        const contact = {
+          name: this.editedContact.name,
+          last_name: this.editedContact.last_name,
+          phone_number: this.editedContact.phone_number,
+          email: this.editedContact.email,
+          country: this.editedContact.country,
+          city: this.editedContact.city,
+          address: this.editedContact.address
+        }
+
+        try {
+          if (this.editedContact.id) {
+            await this.editContact(contact, this.editedContact.id);
+            this.$emit('close');
+            this.$emit('reload');
+          } else {
+            await this.createContact(contact);
+            this.$emit('close');
+            this.$emit('reload');
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+
+    },
+    createContact(contact) {
+      return this.axios.post(process.env.VUE_APP_API_POST, contact, {
+        headers: {
+          'content-type': 'application/json',
+        }
+      });
+    },
+    editContact(contact, id) {
+      return this.axios.put(`${process.env.VUE_APP_API_PUT}/${id}`, contact, {
+        headers: {
+          'content-type': 'application/json',
+        }
+      });
     }
   }
 }
