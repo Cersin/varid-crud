@@ -3,9 +3,10 @@
       :headers="headers"
       :items="data"
       class="elevation-1"
-      :items-per-page="perPage"
+      :loading="loading"
       :server-items-length="total"
       :options.sync="options"
+      @update:page="paginate"
   >
     <template v-slot:top>
       <v-toolbar
@@ -47,17 +48,12 @@
 <script>
 
 export default {
-  props: ['data'],
+  props: ['data', 'loading', 'total'],
   data: () => ({
+    options: {},
     dialogOpen: false,
     dialogDelete: false,
     editContact: null,
-    perPage: 5,
-    total: 68,
-    options: {
-      page: 1,
-      itemsPerPage: 10
-    },
     headers: [
       {
         text: 'Name',
@@ -70,10 +66,18 @@ export default {
       {text: 'Email', value: 'email'},
       {text: 'Country', value: 'country'},
       {text: 'City', value: 'city'},
-      {text: 'Adress', value: 'address'},
+      {text: 'Address', value: 'address'},
       {text: 'Actions', value: 'actions', sortable: false}
     ]
-  })
+  }),
+  methods: {
+    paginate() {
+      this.$emit('options', {
+        page: this.options.page,
+        per_page: this.options.itemsPerPage
+      });
+    }
+  }
 }
 </script>
 
