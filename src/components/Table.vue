@@ -4,7 +4,7 @@
       :items="data"
       class="elevation-1"
       :loading="loading"
-      disable-sort="true"
+      :disable-sort="sort"
       :server-items-length="total"
       :options.sync="options"
       @update:page="paginate"
@@ -53,6 +53,7 @@ export default {
   props: ['data', 'loading', 'total'],
   data: () => ({
     options: {},
+    sort: false,
     dialogOpen: false,
     dialogDelete: false,
     deleteItemId: null,
