@@ -3,7 +3,7 @@
     <Form :dialog="dialogOpen" :editedContact="editContact" @close="closeDialog" @reload="initialize"></Form>
 
     <v-app-bar app>
-      <v-toolbar-title>Application</v-toolbar-title>
+      <v-toolbar-title>Contacts</v-toolbar-title>
       <v-spacer></v-spacer>
       <v-btn text class="primary"
              @click="newContact">Add new contact

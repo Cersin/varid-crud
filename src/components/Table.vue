@@ -4,6 +4,7 @@
       :items="data"
       class="elevation-1"
       :loading="loading"
+      disable-sort="true"
       :server-items-length="total"
       :options.sync="options"
       @update:page="paginate"
@@ -60,7 +61,6 @@ export default {
       {
         text: 'Name',
         align: 'start',
-        sortable: false,
         value: 'name',
       },
       {text: 'Last Name', value: 'last_name'},
