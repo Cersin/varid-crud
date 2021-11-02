@@ -116,6 +116,7 @@ export default {
             } else {
               await this.createContact(contact);
               this.$emit('close');
+              this.$emit('reload');
             }
           } catch (e) {
             console.log(e);

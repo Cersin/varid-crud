@@ -57,7 +57,6 @@ export default {
   methods: {
     closeDialog() {
       this.dialogOpen = false;
-      this.initialize();
     },
     editItem(item) {
       this.editContact = item;
