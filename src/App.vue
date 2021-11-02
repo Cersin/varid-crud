@@ -1,6 +1,6 @@
 <template>
   <v-app id="inspire">
-    <Form :dialog="dialogOpen" :editedContact="editContact" @close="closeDialog" @reload="initialize"></Form>
+    <Form :dialog="dialogOpen" :editedContact="JSON.stringify(editContact)" @close="closeDialog" @reload="initialize"></Form>
 
     <v-app-bar app>
       <v-toolbar-title>Contacts</v-toolbar-title>

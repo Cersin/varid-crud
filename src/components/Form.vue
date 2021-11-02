@@ -8,44 +8,44 @@
       <v-card-text>
         <v-form ref="formRef" class="px-5">
           <v-text-field
-              v-model="editedContact.name"
+              v-model="newContact.name"
               :rules="inputRule"
               required
               label="Name"></v-text-field>
           <v-text-field
-              v-model="editedContact.last_name"
+              v-model="newContact.last_name"
               :rules="inputRule"
               required
               label="Last Name"></v-text-field>
 
           <v-text-field
-              v-model="editedContact.phone_number"
+              v-model="newContact.phone_number"
               :counter="9"
               :rules="phoneRule"
               label="Phone Number"
               required
           ></v-text-field>
           <v-text-field
-              v-model="editedContact.email"
+              v-model="newContact.email"
               :rules="emailRule"
               label="Email"
               required
           ></v-text-field>
 
           <v-text-field
-              v-model="editedContact.country"
+              v-model="newContact.country"
               :rules="inputRule"
               label="Country"
               required
           ></v-text-field>
           <v-text-field
-              v-model="editedContact.city"
+              v-model="newContact.city"
               :rules="inputRule"
               label="City"
               required
           ></v-text-field>
           <v-text-field
-              v-model="editedContact.address"
+              v-model="newContact.address"
               :rules="inputRule"
               label="Address"
               required
@@ -82,38 +82,40 @@ export default {
   },
   computed: {
     buttonTitle() {
-      return this.editedContact.id ? 'Edit contact' : 'Add contact'
+      return this.newContact.id ? 'Edit contact' : 'Add contact'
     },
     headerTitle() {
-      return this.editedContact.id ? 'Edit contact' : 'New contact'
+      return this.newContact.id ? 'Edit contact' : 'New contact'
 
+    },
+    newContact() {
+      return JSON.parse(this.editedContact);
     }
   },
   methods: {
     async add() {
       if (this.$refs.formRef.validate()) {
         const contact = {
-          name: this.editedContact.name,
-          last_name: this.editedContact.last_name,
-          phone_number: this.editedContact.phone_number,
-          email: this.editedContact.email,
-          country: this.editedContact.country,
-          city: this.editedContact.city,
-          address: this.editedContact.address
+          name: this.newContact.name,
+          last_name: this.newContact.last_name,
+          phone_number: this.newContact.phone_number,
+          email: this.newContact.email,
+          country: this.newContact.country,
+          city: this.newContact.city,
+          address: this.newContact.address
         }
 
        let confirmation = confirm("Are you sure?");
 
         if (confirmation) {
           try {
-            if (this.editedContact.id) {
-              await this.editContact(contact, this.editedContact.id);
+            if (this.newContact.id) {
+              await this.editContact(contact, this.newContact.id);
               this.$emit('close');
               this.$emit('reload');
             } else {
               await this.createContact(contact);
               this.$emit('close');
-              this.$emit('reload');
             }
           } catch (e) {
             console.log(e);
