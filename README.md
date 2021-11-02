@@ -1,5 +1,13 @@
 # varid-crud
 
+## Requirements
+```
+For the application to work, you need to create an .env file and two variables in it to communicate with API.
+Example:
+VUE_APP_API_URL=localhost:8080/api/contacts
+VUE_APP_API_REQUEST=localhost:8080/api/contact
+```
+
 ## Project setup
 ```
 npm install
